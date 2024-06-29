@@ -1,33 +1,37 @@
 const express = require("express");
 const path = require("path")
+const bodyparser = require("body-parser");//body parsing middleware
 
 const app = express();
 
-const postRoutes = require("./routes/post");
-const addRoutes = require("./routes/admin");
+ app.set("view engine","ejs");//declare to use ejs with 2 line
+ app.set("views","views")
 
-app.use(express.static(path.join(__dirname, "public")));//register (public) directory as middleware to be useable for external link
+const postRoutes = require("./routes/post");
+const {adminRoutes} = require("./routes/admin");
+
+app.use(express.static(path.join(__dirname, "public")));
+app.use(bodyparser.urlencoded({extended: false}))
+// app.use(express.json());  //watching obj datas from form submit
 
 app.use("/post",(req,res,next)=>{
     console.log("I am post middleware")
     next();
-})
-app.use(postRoutes);  //  module registered
-app.use(addRoutes);
-
+});
 app.use((req,res,next)=>{
-    console.log("I am middleware two")
+    console.log("I am parent middleware")
+    next();
+});
+app.use("/admin",(req,res,next)=>{
+    console.log("Admin middleware approved");
     next();
 })
-// app.get("/",(req,res)=>{
-//     // res.send("<h1>I am home page</h1>")
-//     // res.sendFile("./views/homepage.html",{root: __dirname,});//sending static html file without path module
-//     res.sendFile(path.join(__dirname,"views","homepage.html"))
-// })
 
-// app.get("/post",(req,res)=>{
-//     res.sendFile(path.join(__dirname,"views","postpage.html"))
-// })   
-// sent it to post.js
+app.use("/admin",adminRoutes);
+app.use(postRoutes);  
+
+
+
+
 
 app.listen(8080);

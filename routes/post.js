@@ -1,13 +1,13 @@
 const express = require("express");
 const path = require("path");
 
-const router = express.Router(); //router can be named as likely
+const router = express.Router(); 
+const {posts} = require("./admin");
 
-//(2)changed router. insted app.
 router.get("/",(req,res)=>{
-    // res.send("<h1>I am home page</h1>")
-    // res.sendFile("./views/homepage.html",{root: __dirname,});//sending static html file without path module
-    res.sendFile(path.join(__dirname,"..","views","homepage.html"))
+    console.log(posts)
+    // res.sendFile(path.join(__dirname,"..","views","homepage.html"))
+    res.render("home",{title: "Hello world",postsArr: posts}); //render home.ejs using ejs
 })
 
 router.get("/post",(req,res)=>{
