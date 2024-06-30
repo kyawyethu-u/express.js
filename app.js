@@ -3,12 +3,12 @@ const path = require("path")
 const bodyparser = require("body-parser");//body parsing middleware
 
 const app = express();
-
+//using "view engine" node server know/detect extenctions like .html/.ejs("ejs")
  app.set("view engine","ejs");//declare to use ejs with 2 line
- app.set("views","views")
+ app.set("views","views")//sec para is views folder(first para is path)
 
 const postRoutes = require("./routes/post");
-const {adminRoutes} = require("./routes/admin");
+const adminRoutes = require("./routes/admin");
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyparser.urlencoded({extended: false}))

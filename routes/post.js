@@ -4,14 +4,14 @@ const path = require("path");
 const router = express.Router(); 
 const {posts} = require("./admin");
 
-router.get("/",(req,res)=>{
-    console.log(posts)
-    // res.sendFile(path.join(__dirname,"..","views","homepage.html"))
-    res.render("home",{title: "Hello world",postsArr: posts}); //render home.ejs using ejs
-})
+const postController = require("../controllers/post");//import
 
-router.get("/post",(req,res)=>{
-    res.sendFile(path.join(__dirname,"..","views","postpage.html"))
-})
+
+router.get("/",postController.renderHomePage);
+router.get("/post/:postId",postController.getPost);//postId is key
+
+
+
+
 
 module.exports = router;
